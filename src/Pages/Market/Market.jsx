@@ -3,7 +3,7 @@ import { Item } from "./Item/Item";
 import axios from "axios";
 import "./../../CSS/production/Market.css";
 
-export const Market = () => {
+const Market = () => {
   const [rates, setRates] = useState({});
   useEffect(() => {
     axios.get("https://cdn.cur.su/api/latest.json").then((res) => {
@@ -26,3 +26,5 @@ export const Market = () => {
     </main>
   );
 };
+
+export default Market

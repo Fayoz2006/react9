@@ -1,20 +1,41 @@
 import React, { useState } from "react";
+import axios from "./../../api/axios";
 import "./../../CSS/production/Register.css";
 import SVGicons from "./../../Components/SVG/SVGicons";
 import { useForm } from "react-hook-form";
+const LOGIN_URL = "/auth";
 
-export const Register = () => {
+const Register = () => {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data, e) => {
-    console.log(data);
+
+  let [success, setSuccess] = useState(false);
+  const onSubmit = async (data) => {
+    try {
+      await axios.post(LOGIN_URL, JSON.stringify(data), {
+        headers: { "content-type": "application/json" },
+        withCredentials: true,
+      });
+
+      setSuccess(true);
+      window.location.href = "/overview";
+    } catch (err) {
+      if (!err.response) {
+        alert("No server response");
+      } else if (err.response?.status === 400) {
+        alert("You have empty input!");
+      } else if (err.response?.status === 401) {
+        alert("Unauthorized, Please go back and SING UP :)");
+      } else {
+        alert("Login failed");
+      }
+    }
   };
 
   const [password, setPassword] = useState(true);
-  console.log(password);
   return (
     <div className="register">
       <div className="background">
@@ -25,7 +46,7 @@ export const Register = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <h3>Welcome!</h3>
           <div className="inputs">
-            <input
+            {/* <input
               type="text"
               placeholder="Name"
               name="name"
@@ -42,7 +63,7 @@ export const Register = () => {
               style={{
                 border: errors.surname ? "1px solid red" : "1px solid #1288E8",
               }}
-            />
+            /> */}
             <div
               className="login"
               style={{
@@ -74,7 +95,7 @@ export const Register = () => {
                 type={password ? "password" : "text"}
                 placeholder="Password"
                 name="password"
-                {...register("password", { required: true, minLength: 8 })}
+                {...register("password", { required: true })}
               />
               <img
                 src="/images/eye.png"
@@ -100,3 +121,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

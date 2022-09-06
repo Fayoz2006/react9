@@ -6,7 +6,7 @@ import { BalanceChart } from "./Charts/BalanceChart";
 import { SpendinChart } from "./Charts/SpendingChart";
 import { MarketChart } from "./Charts/MarketChart";
 
-export const Overview = () => {
+const Overview = () => {
   const [rates, setRates] = useState({});
   useEffect(() => {
     axios.get("https://cdn.cur.su/api/latest.json").then((res) => {
@@ -201,3 +201,5 @@ export const Overview = () => {
     </main>
   );
 };
+
+export default Overview
